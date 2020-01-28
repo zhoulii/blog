@@ -2,7 +2,9 @@
 title: 基于 Hexo + Github Pages + Travis CI 搭建个人博客
 date: 2020-01-27 22:00:00
 updated: 2020-01-27 23:52:00
-tags:
+tags: ["hexo"]
+categories:
+  - 经验
 ---
 
 ![](https://gitee.com/totorooo/assets/raw/master/image/hexo_github_travis_cover.png)
