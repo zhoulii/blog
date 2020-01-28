@@ -110,7 +110,10 @@
 <blockquote>
 <p>推荐：图标可以到 iconfont 下载</p>
 </blockquote>
-<h2 id="17-参考资源"><a href="#17-参考资源" class="headerlink" title="17.参考资源"></a>17.参考资源</h2><ul>
+<h2 id="17-设置代码高亮主题"><a href="#17-设置代码高亮主题" class="headerlink" title="17.设置代码高亮主题"></a>17.设置代码高亮主题</h2><p>打开 themes/next/_config.yml，具体配置如下：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">codeblock:</span></span><br><span class="line">  <span class="attr">highlight_theme:</span> <span class="string">galactic</span></span><br><span class="line">  <span class="attr">copy_button:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">show_result:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">style:</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="18-参考资源"><a href="#18-参考资源" class="headerlink" title="18.参考资源"></a>18.参考资源</h2><ul>
 <li><a href="https://theme-next.org/" target="_blank" rel="noopener">主题官网-新</a></li>
 <li><a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">主题官网-旧</a></li>
 <li><a href="https://www.bilibili.com/video/av17653359" target="_blank" rel="noopener">使用Hexo博客搭建的个人博客，使用Next主题来进行优化改造</a></li>
