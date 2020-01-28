@@ -91,10 +91,25 @@
 <p>文章的标签还可以通过另一种方式来指定，如下方代码所示。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hexo 的 NexT 主题美化</span><br><span class="line">date: 2020-01-28 10:20:20</span><br><span class="line">updated: 2020-01-28 16:16:16</span><br><span class="line">tags: </span><br><span class="line">  - hexo</span><br><span class="line">  - github</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
 
-<h2 id="15-启用分类页"><a href="#15-启用分类页" class="headerlink" title="15.启用分类页"></a>15.启用分类页</h2><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://theme-next.org/" target="_blank" rel="noopener">https://theme-next.org/</a></p>
+<h2 id="15-启用分类页"><a href="#15-启用分类页" class="headerlink" title="15.启用分类页"></a>15.启用分类页</h2><p>打开 themes/next/_config.yml，启用标签页：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">home</span></span><br><span class="line">  <span class="comment">#about: /about/ || user</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">archive</span></span><br><span class="line">  <span class="comment">#schedule: /schedule/ || calendar</span></span><br><span class="line">  <span class="comment">#sitemap: /sitemap.xml || sitemap</span></span><br><span class="line">  <span class="comment">#commonweal: /404/ || heartbeat</span></span><br></pre></td></tr></table></figure>
+
+<p>在博客根目录的 source 文件夹下创建一个名为 categories 的文件夹，在 categories 文件夹下创建一个 index.md 文件，文件内容如代码块所示，需要注意的是 type 的值必须写 categories，title 是分类页的标题，可以随意起。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">分类</span> </span><br><span class="line"><span class="attr">date:</span> <span class="number">2020</span><span class="number">-01</span><span class="number">-28</span> <span class="number">17</span><span class="string">:40:00</span></span><br><span class="line"><span class="attr">type:</span> <span class="string">"categories"</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+
+<p>与为文章添加标签类似，为文章添加所属类别也只需在文章开头的描述内容中指定，示例如下。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hexo 的 NexT 主题美化</span><br><span class="line">date: 2020-01-28 10:20:20</span><br><span class="line">updated: 2020-01-28 16:16:16</span><br><span class="line">categories: </span><br><span class="line">  - 大数据</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<p>与一篇文章可以有多个标签不同，一篇文章只能属于一个类别，如果在指定类别时，指定了多个分类，那么就会形成层级关系，如下方代码块所示，该写法表示文章所属类别为 a/b。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hexo 的 NexT 主题美化</span><br><span class="line">date: 2020-01-28 10:20:20</span><br><span class="line">updated: 2020-01-28 16:16:16</span><br><span class="line">categories: </span><br><span class="line">  - a</span><br><span class="line">  - b</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://theme-next.org/" target="_blank" rel="noopener">https://theme-next.org/</a></p>
 <p><a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">http://theme-next.iissnan.com/</a></p>
 <p><a href="https://www.bilibili.com/video/av17653359" target="_blank" rel="noopener">https://www.bilibili.com/video/av17653359</a></p>
 ]]></content>
+      <categories>
+        <category>经验</category>
+      </categories>
       <tags>
         <tag>hexo</tag>
       </tags>
@@ -139,6 +154,12 @@
 <h2 id="10-访问博客站点"><a href="#10-访问博客站点" class="headerlink" title="10.访问博客站点"></a>10.访问博客站点</h2><p>访问博客站点，验证 Travis CI 是否成功发布博客。</p>
 <p><img src="https://gitee.com/totorooo/assets/raw/master/image/blog_publish_success.png" alt=""></p>
 ]]></content>
+      <categories>
+        <category>经验</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
   </entry>
   <entry>
     <title>基于 Gitee + PicGo 搭建个人图床</title>
@@ -159,5 +180,11 @@
 <h2 id="5-上传图片到-Gitee-图床"><a href="#5-上传图片到-Gitee-图床" class="headerlink" title="5.上传图片到 Gitee 图床"></a>5.上传图片到 Gitee 图床</h2><p>上传图片后，返回的链接会自动进入剪贴板，可直接粘贴使用。</p>
 <p><img src="https://gitee.com/totorooo/assets/raw/master/image/picgo_upload_image.png" alt=""></p>
 ]]></content>
+      <categories>
+        <category>经验</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
   </entry>
 </search>
