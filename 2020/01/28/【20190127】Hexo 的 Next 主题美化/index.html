@@ -6,8 +6,8 @@
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.2.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/paw-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/paw-16x16-next.png">
   <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
 
 <link rel="stylesheet" href="/blog/css/main.css">
@@ -48,18 +48,18 @@
   };
 </script>
 
-  <meta name="description" content="01.NexT 主题的下载与安装 下载 NexT 主题并将其解压到博客的 themes 目录下，修改名称为 next； 修改博客根目录下的 _config.yml，将 theme 项设置为 next;  02.修改主题样式编辑 next 主题目录下的 _config.yml 文件，打开相应 schema 的注释，细节如下。 123456789# ------------------------">
-<meta property="og:type" content="article">
+  <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo 的 NexT 主题美化">
 <meta property="og:url" content="https://zhoulii.github.io/blog/2020/01/28/%E3%80%9020190127%E3%80%91Hexo%20%E7%9A%84%20Next%20%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/index.html">
 <meta property="og:site_name" content="Leo&#39;s Blog">
-<meta property="og:description" content="01.NexT 主题的下载与安装 下载 NexT 主题并将其解压到博客的 themes 目录下，修改名称为 next； 修改博客根目录下的 _config.yml，将 theme 项设置为 next;  02.修改主题样式编辑 next 主题目录下的 _config.yml 文件，打开相应 schema 的注释，细节如下。 123456789# ------------------------">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/totorooo/assets/raw/master/image/beautify_theme_next_cover.png">
 <meta property="article:published_time" content="2020-01-28T10:20:20.000Z">
 <meta property="article:modified_time" content="2020-01-28T16:16:16.000Z">
 <meta property="article:author" content="Leo">
 <meta property="article:tag" content="hexo">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/totorooo/assets/raw/master/image/beautify_theme_next_cover.png">
 
 <link rel="canonical" href="https://zhoulii.github.io/blog/2020/01/28/%E3%80%9020190127%E3%80%91Hexo%20%E7%9A%84%20Next%20%E4%B8%BB%E9%A2%98%E7%BE%8E%E5%8C%96/">
 
@@ -257,7 +257,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <a id="more"></a>
+        <p><img src="https://gitee.com/totorooo/assets/raw/master/image/beautify_theme_next_cover.png" alt=""></p>
+<a id="more"></a>
 
 <h2 id="01-NexT-主题的下载与安装"><a href="#01-NexT-主题的下载与安装" class="headerlink" title="01.NexT 主题的下载与安装"></a>01.NexT 主题的下载与安装</h2><ul>
 <li>下载 <a href="https://github.com/theme-next/hexo-theme-next/releases" target="_blank" rel="noopener">NexT</a> 主题并将其解压到博客的 themes 目录下，修改名称为 next；</li>
@@ -357,9 +358,17 @@
 <p>与一篇文章可以有多个标签不同，一篇文章只能属于一个类别，如果在指定类别时，指定了多个分类，那么就会形成层级关系，如下方代码块所示，该写法表示文章所属类别为 a/b。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: Hexo 的 NexT 主题美化</span><br><span class="line">date: 2020-01-28 10:20:20</span><br><span class="line">updated: 2020-01-28 16:16:16</span><br><span class="line">categories: </span><br><span class="line">  - a</span><br><span class="line">  - b</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
 
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://theme-next.org/" target="_blank" rel="noopener">https://theme-next.org/</a></p>
-<p><a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">http://theme-next.iissnan.com/</a></p>
-<p><a href="https://www.bilibili.com/video/av17653359" target="_blank" rel="noopener">https://www.bilibili.com/video/av17653359</a></p>
+<h2 id="16-设置网站图标"><a href="#16-设置网站图标" class="headerlink" title="16.设置网站图标"></a>16.设置网站图标</h2><p>准备好两张图标，尺寸为 16x16 与 32x32。将下载好的图标放到 themes\next\source\images 目录中，然后打开 themes/next/_config.yml，设置网站图标。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">favicon:</span></span><br><span class="line">  <span class="attr">small:</span> <span class="string">/images/paw-16x16-next.png</span></span><br><span class="line">  <span class="attr">medium:</span> <span class="string">/images/paw-32x32-next.png</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>推荐：图标可以到 iconfont 下载</p>
+</blockquote>
+<h2 id="17-参考资源"><a href="#17-参考资源" class="headerlink" title="17.参考资源"></a>17.参考资源</h2><ul>
+<li><a href="https://theme-next.org/" target="_blank" rel="noopener">主题官网-新</a></li>
+<li><a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">主题官网-旧</a></li>
+<li><a href="https://www.bilibili.com/video/av17653359" target="_blank" rel="noopener">使用Hexo博客搭建的个人博客，使用Next主题来进行优化改造</a></li>
+</ul>
 
     </div>
 
@@ -441,7 +450,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#01-NexT-主题的下载与安装"><span class="nav-text">01.NexT 主题的下载与安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#02-修改主题样式"><span class="nav-text">02.修改主题样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#03-设置主题为中文"><span class="nav-text">03.设置主题为中文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#04-设置博客头像"><span class="nav-text">04.设置博客头像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#05-更改博客标题、作者名"><span class="nav-text">05.更改博客标题、作者名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#06-添加动态背景"><span class="nav-text">06.添加动态背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#07-设置加载效果"><span class="nav-text">07.设置加载效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#08-设置点击特效"><span class="nav-text">08.设置点击特效</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#09-取消标题自动编号"><span class="nav-text">09.取消标题自动编号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-隐藏页面底部文字"><span class="nav-text">10.隐藏页面底部文字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-设置博客透明度"><span class="nav-text">11.设置博客透明度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-显示阅读进度"><span class="nav-text">12.显示阅读进度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-启用本地搜索"><span class="nav-text">13.启用本地搜索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-启用标签页"><span class="nav-text">14.启用标签页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-启用分类页"><span class="nav-text">15.启用分类页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#01-NexT-主题的下载与安装"><span class="nav-text">01.NexT 主题的下载与安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#02-修改主题样式"><span class="nav-text">02.修改主题样式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#03-设置主题为中文"><span class="nav-text">03.设置主题为中文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#04-设置博客头像"><span class="nav-text">04.设置博客头像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#05-更改博客标题、作者名"><span class="nav-text">05.更改博客标题、作者名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#06-添加动态背景"><span class="nav-text">06.添加动态背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#07-设置加载效果"><span class="nav-text">07.设置加载效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#08-设置点击特效"><span class="nav-text">08.设置点击特效</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#09-取消标题自动编号"><span class="nav-text">09.取消标题自动编号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10-隐藏页面底部文字"><span class="nav-text">10.隐藏页面底部文字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-设置博客透明度"><span class="nav-text">11.设置博客透明度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#12-显示阅读进度"><span class="nav-text">12.显示阅读进度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#13-启用本地搜索"><span class="nav-text">13.启用本地搜索</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#14-启用标签页"><span class="nav-text">14.启用标签页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#15-启用分类页"><span class="nav-text">15.启用分类页</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#16-设置网站图标"><span class="nav-text">16.设置网站图标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#17-参考资源"><span class="nav-text">17.参考资源</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
