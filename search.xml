@@ -10,6 +10,9 @@
 <li>下载 <a href="https://github.com/theme-next/hexo-theme-next/releases" target="_blank" rel="noopener">NexT</a> 主题并将其解压到博客的 themes 目录下，修改名称为 next；</li>
 <li>修改博客根目录下的 _config.yml，将 theme 项设置为 next;</li>
 </ul>
+<blockquote>
+<p>说明：下述操作均基于 NexT v7.7.0</p>
+</blockquote>
 <h2 id="02-修改主题样式"><a href="#02-修改主题样式" class="headerlink" title="02.修改主题样式"></a>02.修改主题样式</h2><p>编辑 next 主题目录下的 _config.yml 文件，打开相应 schema 的注释，细节如下。</p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ---------------------------------------------------------------</span></span><br><span class="line"><span class="comment"># Scheme Settings</span></span><br><span class="line"><span class="comment"># ---------------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Schemes</span></span><br><span class="line"><span class="comment">#scheme: Muse</span></span><br><span class="line"><span class="comment">#scheme: Mist</span></span><br><span class="line"><span class="comment">#scheme: Pisces</span></span><br><span class="line"><span class="attr">scheme:</span> <span class="string">Gemini</span></span><br></pre></td></tr></table></figure>
 
@@ -119,10 +122,14 @@
 <h2 id="19-隐藏文章底部-标签"><a href="#19-隐藏文章底部-标签" class="headerlink" title="19.隐藏文章底部#标签"></a>19.隐藏文章底部#标签</h2><p>打开 themes\next\layout_macro\post.swig，注释掉如下内容：</p>
 <figure class="highlight css"><table><tr><td class="code"><pre><span class="line">&lt;!<span class="selector-tag">--</span></span><br><span class="line">  &#123;%- if post.tags and post.tags.length %&#125;</span><br><span class="line">    &#123;%- if theme.tag_icon %&#125;</span><br><span class="line">      &#123;%- set tag_indicate = '&lt;i class="fa fa-tag"&gt;&lt;/i&gt;' %&#125;</span><br><span class="line">    &#123;% else %&#125;</span><br><span class="line">      &#123;%- set tag_indicate = '#' %&#125;</span><br><span class="line">    &#123;%- endif %&#125;</span><br><span class="line">    &lt;div class="post-tags"&gt;</span><br><span class="line">      &#123;%- for tag in post.tags.toArray() %&#125;</span><br><span class="line">        &lt;a href="&#123;&#123; url_for(tag.path) &#125;&#125;" rel="tag"&gt;&#123;&#123; tag_indicate &#125;&#125; &#123;&#123; tag.name &#125;&#125;&lt;/a&gt;</span><br><span class="line">      &#123;%- endfor %&#125;</span><br><span class="line">    &lt;/div&gt;</span><br><span class="line">  &#123;%- endif %&#125;</span><br><span class="line"><span class="selector-tag">--</span>&gt;</span><br></pre></td></tr></table></figure>
 
-<h2 id="20-参考资源"><a href="#20-参考资源" class="headerlink" title="20.参考资源"></a>20.参考资源</h2><ul>
+<h2 id="20-去除顶部黑线"><a href="#20-去除顶部黑线" class="headerlink" title="20.去除顶部黑线"></a>20.去除顶部黑线</h2><p>打开 themes\next\layout\_layout.swig，注释掉如下代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">&lt;div class="headband"&gt;&lt;/div&gt; </span></span><br><span class="line"><span class="comment">--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="21-参考资源"><a href="#21-参考资源" class="headerlink" title="21.参考资源"></a>21.参考资源</h2><ul>
 <li><a href="https://theme-next.org/" target="_blank" rel="noopener">主题官网-新</a></li>
 <li><a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">主题官网-旧</a></li>
 <li><a href="https://www.bilibili.com/video/av17653359" target="_blank" rel="noopener">使用Hexo博客搭建的个人博客，使用Next主题来进行优化改造</a></li>
+<li><a href="https://www.jianshu.com/p/9f0e90cc32c2" target="_blank" rel="noopener">Hexo-NexT配置超炫网页效果</a></li>
 </ul>
 ]]></content>
       <categories>
