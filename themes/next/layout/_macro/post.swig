@@ -227,7 +227,7 @@
       {%- if theme.creative_commons.license and theme.creative_commons.post %}
         {{ partial('_partials/post/post-copyright.swig') }}
       {%- endif %}
-
+<!--
       <footer class="post-footer">
         {%- if post.tags and post.tags.length %}
           {%- if theme.tag_icon %}
@@ -246,6 +246,7 @@
 
         {{ post_nav(post) }}
       </footer>
+-->
     {% else %}
       <footer class="post-footer">
         <div class="post-eof"></div>
