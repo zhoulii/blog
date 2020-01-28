@@ -10,6 +10,7 @@
   </div>
 {%- endif %}
 
+<!--
 <div class="copyright">
   {% set copyright_year = date(null, 'YYYY') %}
   &copy; {% if theme.footer.since and theme.footer.since != copyright_year %}{{ theme.footer.since }} – {% endif %}
@@ -41,6 +42,7 @@
     <span title="{{ __('symbols_count_time.time_total') }}">{{ symbolsTimeTotal(site, theme.symbols_count_time.awl, theme.symbols_count_time.wpm, __('symbols_count_time.time_minutes')) }}</span>
   {%- endif %}
 </div>
+-->
 
 {%- if theme.footer.powered.enable %}
   <div class="powered-by">
