@@ -4,7 +4,7 @@ date: 2020-01-27 22:00:00
 updated: 2020-01-27 23:52:00
 tags: ["hexo"]
 categories:
-  - 经验
+  - 工具
 ---
 
 ![](https://gitee.com/totorooo/assets/raw/master/image/hexo_github_travis_cover.png)

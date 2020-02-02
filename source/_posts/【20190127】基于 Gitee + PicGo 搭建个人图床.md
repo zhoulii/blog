@@ -4,7 +4,7 @@ date: 2020-01-27 17:41:40
 updated: 2020-01-27 19:41:00
 tags: ["hexo"]
 categories:
-  - 经验
+  - 工具
 ---
 
 ![](https://gitee.com/totorooo/assets/raw/master/image/gitee_picgo_cover.png)
