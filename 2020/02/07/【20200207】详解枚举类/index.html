@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/cat-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/cat-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+<link rel="stylesheet" href="/blog/lib/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/blog/lib/pace/pace-theme-center-atom.min.css">
+  <script src="/blog/lib/pace/pace.min.js"></script>
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://zhoulii.github.io/blog').hostname,
+    root: '/blog/',
+    scheme: 'Gemini',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":true,"show_result":true,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":true},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta property="og:type" content="article">
+<meta property="og:title" content="详解枚举类">
+<meta property="og:url" content="https://zhoulii.github.io/blog/2020/02/07/%E3%80%9020200207%E3%80%91%E8%AF%A6%E8%A7%A3%E6%9E%9A%E4%B8%BE%E7%B1%BB/index.html">
+<meta property="og:site_name" content="Leo&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/totorooo/assets/raw/master/image/java_enum_logo.png">
+<meta property="article:published_time" content="2020-02-07T12:37:20.000Z">
+<meta property="article:modified_time" content="2020-02-07T17:35:16.000Z">
+<meta property="article:author" content="Leo">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/totorooo/assets/raw/master/image/java_enum_logo.png">
+
+<link rel="canonical" href="https://zhoulii.github.io/blog/2020/02/07/%E3%80%9020200207%E3%80%91%E8%AF%A6%E8%A7%A3%E6%9E%9A%E4%B8%BE%E7%B1%BB/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>详解枚举类 | Leo's Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <!-- <div class="headband"></div> -->
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/blog/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Leo's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">指路为码</p>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/blog/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/blog/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/blog/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/blog/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://zhoulii.github.io/blog/2020/02/07/%E3%80%9020200207%E3%80%91%E8%AF%A6%E8%A7%A3%E6%9E%9A%E4%B8%BE%E7%B1%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/gakki.png">
+      <meta itemprop="name" content="Leo">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Leo's Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          详解枚举类
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-02-07 12:37:20 / 修改时间：17:35:16" itemprop="dateCreated datePublished" datetime="2020-02-07T12:37:20+00:00">2020-02-07</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/blog/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">技术</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://gitee.com/totorooo/assets/raw/master/image/java_enum_logo.png" alt=""></p>
+<a id="more"></a>
+
+<h2 id="枚举的特性"><a href="#枚举的特性" class="headerlink" title="枚举的特性"></a>枚举的特性</h2><p>如果一个类的对象个数是有限的而且是不变的，我们通常将这样的类设计成枚举类，枚举类的特点如下：</p>
+<ul>
+<li>枚举类默认是使用 final 关键字修饰的，所以枚举类不能被继承；</li>
+<li>枚举类的构造函数默认是使用 private 修饰的；</li>
+<li>定义枚举类时所有实例必须在第一行全部列出；</li>
+<li>枚举类也可以实现接口；</li>
+<li>枚举类可以包含抽象方法。</li>
+</ul>
+<h2 id="枚举的本质"><a href="#枚举的本质" class="headerlink" title="枚举的本质"></a>枚举的本质</h2><p>首先我们来定义一个枚举类型：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Color &#123;</span><br><span class="line">    RED,BLUE,YELLO</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行 <code>javac Color.java</code> 将上述的 Color 类编译成 class 文件，然后下载安装 <a href="https://varaneckas.com/jad/" target="_blank" rel="noopener">jad</a>，执行 <code>jad -sjava Color.class</code> 命令反编译 class 文件，反编译后的代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.</span></span><br><span class="line"><span class="comment">// Jad home page: http://www.kpdus.com/jad.html</span></span><br><span class="line"><span class="comment">// Decompiler options: packimports(3) </span></span><br><span class="line"><span class="comment">// Source File Name:   Color.java</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Color</span> <span class="keyword">extends</span> <span class="title">Enum</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Color[] values()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> (Color[])$VALUES.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Color <span class="title">valueOf</span><span class="params">(String s)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (Color)Enum.valueOf(com/github/zhoulii/Color, s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Color</span><span class="params">(String s, <span class="keyword">int</span> i)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(s, i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Color RED;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Color BLUE;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Color YELLOW;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Color $VALUES[];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> </span><br><span class="line">    &#123;</span><br><span class="line">        RED = <span class="keyword">new</span> Color(<span class="string">"RED"</span>, <span class="number">0</span>);</span><br><span class="line">        BLUE = <span class="keyword">new</span> Color(<span class="string">"BLUE"</span>, <span class="number">1</span>);</span><br><span class="line">        YELLOW = <span class="keyword">new</span> Color(<span class="string">"YELLOW"</span>, <span class="number">2</span>);</span><br><span class="line">        $VALUES = (<span class="keyword">new</span> Color[] &#123;</span><br><span class="line">            RED, BLUE, YELLOW</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>从反编译的代码中我们可以得到如下信息：</p>
+<ul>
+<li>枚举类型也是一个类，并且是 Enum 的子类；</li>
+<li>枚举类使用了 final 关键字修饰，这意味着枚举类不能被继承；</li>
+<li>枚举类的构造方法是私有的；</li>
+<li>枚举对象的初始化操作放在静态代码块中，会在类加载时执行；</li>
+<li>枚举对象是静态常量；</li>
+</ul>
+<p>看下 Enum 类，该类是一个抽象类，实现了 Comparable 与 Serializable 接口，这就表示枚举对象是可以比较的并且支持序列化。</p>
+<h2 id="枚举的写法"><a href="#枚举的写法" class="headerlink" title="枚举的写法"></a>枚举的写法</h2><h3 id="方式1：定义常量"><a href="#方式1：定义常量" class="headerlink" title="方式1：定义常量"></a>方式1：定义常量</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Color &#123;</span><br><span class="line">    RED,BLUE,YELLOW</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>反编译后的代码如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.</span></span><br><span class="line"><span class="comment">// Jad home page: http://www.kpdus.com/jad.html</span></span><br><span class="line"><span class="comment">// Decompiler options: packimports(3) </span></span><br><span class="line"><span class="comment">// Source File Name:   Color.java</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Color</span> <span class="keyword">extends</span> <span class="title">Enum</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Color[] values()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> (Color[])$VALUES.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Color <span class="title">valueOf</span><span class="params">(String s)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (Color)Enum.valueOf(com/github/zhoulii/Color, s);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Color</span><span class="params">(String s, <span class="keyword">int</span> i)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(s, i);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Color RED;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Color BLUE;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Color YELLOW;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Color $VALUES[];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> </span><br><span class="line">    &#123;</span><br><span class="line">        RED = <span class="keyword">new</span> Color(<span class="string">"RED"</span>, <span class="number">0</span>);</span><br><span class="line">        BLUE = <span class="keyword">new</span> Color(<span class="string">"BLUE"</span>, <span class="number">1</span>);</span><br><span class="line">        YELLOW = <span class="keyword">new</span> Color(<span class="string">"YELLOW"</span>, <span class="number">2</span>);</span><br><span class="line">        $VALUES = (<span class="keyword">new</span> Color[] &#123;</span><br><span class="line">            RED, BLUE, YELLOW</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="方式2：添加方法"><a href="#方式2：添加方法" class="headerlink" title="方式2：添加方法"></a>方式2：添加方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Color &#123;</span><br><span class="line">    RED(<span class="number">1</span>),</span><br><span class="line">    BLUE(<span class="number">1</span>),</span><br><span class="line">    YELLOW(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> num;</span><br><span class="line"></span><br><span class="line">    Color(<span class="keyword">int</span> num)&#123;</span><br><span class="line">        <span class="keyword">this</span>.num = num;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNum</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.num;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>反编译后的代码如下:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.</span></span><br><span class="line"><span class="comment">// Jad home page: http://www.kpdus.com/jad.html</span></span><br><span class="line"><span class="comment">// Decompiler options: packimports(3) </span></span><br><span class="line"><span class="comment">// Source File Name:   Color.java</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Color</span> <span class="keyword">extends</span> <span class="title">Enum</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Color[] values()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> (Color[])$VALUES.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Color <span class="title">valueOf</span><span class="params">(String name)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (Color)Enum.valueOf(com/github/zhoulii/Color, name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Color</span><span class="params">(String s, <span class="keyword">int</span> i, <span class="keyword">int</span> num)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(s, i);</span><br><span class="line">        <span class="keyword">this</span>.num = num;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getNum</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> num;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Color RED;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Color BLUE;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Color YELLOW;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Color $VALUES[];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> </span><br><span class="line">    &#123;</span><br><span class="line">        RED = <span class="keyword">new</span> Color(<span class="string">"RED"</span>, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">        BLUE = <span class="keyword">new</span> Color(<span class="string">"BLUE"</span>, <span class="number">1</span>, <span class="number">1</span>);</span><br><span class="line">        YELLOW = <span class="keyword">new</span> Color(<span class="string">"YELLOW"</span>, <span class="number">2</span>, <span class="number">1</span>);</span><br><span class="line">        $VALUES = (<span class="keyword">new</span> Color[] &#123;</span><br><span class="line">            RED, BLUE, YELLOW</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="方式3：实现接口"><a href="#方式3：实现接口" class="headerlink" title="方式3：实现接口"></a>方式3：实现接口</h3><p>接口代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyPrinter</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>枚举类代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Color implements MyPrinter&#123;</span><br><span class="line">    RED(<span class="string">"红"</span>, <span class="number">1</span>),</span><br><span class="line">    BLUE(<span class="string">"蓝"</span>, <span class="number">1</span>),</span><br><span class="line">    YELLOW(<span class="string">"黄"</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> index;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    Color(String name, <span class="keyword">int</span> index)&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.index = index;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getIndex</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.index;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"name: "</span> + name + <span class="string">", index: "</span> + index);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>反编译后代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.</span></span><br><span class="line"><span class="comment">// Jad home page: http://www.kpdus.com/jad.html</span></span><br><span class="line"><span class="comment">// Decompiler options: packimports(3) </span></span><br><span class="line"><span class="comment">// Source File Name:   Color.java</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.PrintStream;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Referenced classes of package com.github.zhoulii:</span></span><br><span class="line"><span class="comment">//            MyPrinter</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Color</span> <span class="keyword">extends</span> <span class="title">Enum</span></span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">MyPrinter</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Color[] values()</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> (Color[])$VALUES.clone();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Color <span class="title">valueOf</span><span class="params">(String name)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (Color)Enum.valueOf(com/github/zhoulii/Color, name);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Color</span><span class="params">(String s, <span class="keyword">int</span> i, String name, <span class="keyword">int</span> index)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(s, i);</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.index = index;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getIndex</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> index;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">print</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        System.out.println((<span class="keyword">new</span> StringBuilder()).append(<span class="string">"name: "</span>).append(name).append(<span class="string">", index: "</span>).append(index).toString());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Color RED;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Color BLUE;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Color YELLOW;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> index;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Color $VALUES[];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> </span><br><span class="line">    &#123;</span><br><span class="line">        RED = <span class="keyword">new</span> Color(<span class="string">"RED"</span>, <span class="number">0</span>, <span class="string">"\u7EA2"</span>, <span class="number">1</span>);</span><br><span class="line">        BLUE = <span class="keyword">new</span> Color(<span class="string">"BLUE"</span>, <span class="number">1</span>, <span class="string">"\u84DD"</span>, <span class="number">1</span>);</span><br><span class="line">        YELLOW = <span class="keyword">new</span> Color(<span class="string">"YELLOW"</span>, <span class="number">2</span>, <span class="string">"\u9EC4"</span>, <span class="number">1</span>);</span><br><span class="line">        $VALUES = (<span class="keyword">new</span> Color[] &#123;</span><br><span class="line">            RED, BLUE, YELLOW</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="方式4：组织枚举"><a href="#方式4：组织枚举" class="headerlink" title="方式4：组织枚举"></a>方式4：组织枚举</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 可以在接口或类中组织枚举</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Food</span> </span>&#123;</span><br><span class="line">    <span class="keyword">enum</span> Coffee implements Food&#123;  </span><br><span class="line">        BLACK_COFFEE,DECAF_COFFEE,LATTE,CAPPUCCINO  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">enum</span> Dessert implements Food&#123;  </span><br><span class="line">        FRUIT, CAKE, GELATO</span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>反编译后代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Decompiled by Jad v1.5.8g. Copyright 2001 Pavel Kouznetsov.</span></span><br><span class="line"><span class="comment">// Jad home page: http://www.kpdus.com/jad.html</span></span><br><span class="line"><span class="comment">// Decompiler options: packimports(3) </span></span><br><span class="line"><span class="comment">// Source File Name:   Food.java</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Food</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Dessert</span> <span class="keyword">extends</span> <span class="title">Enum</span></span></span><br><span class="line"><span class="class">        <span class="keyword">implements</span> <span class="title">Food</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> Dessert[] values()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> (Dessert[])$VALUES.clone();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Dessert <span class="title">valueOf</span><span class="params">(String s)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (Dessert)Enum.valueOf(com/github/zhoulii/Food$Dessert, s);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Dessert FRUIT;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Dessert CAKE;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Dessert GELATO;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Dessert $VALUES[];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">static</span> </span><br><span class="line">        &#123;</span><br><span class="line">            FRUIT = <span class="keyword">new</span> Dessert(<span class="string">"FRUIT"</span>, <span class="number">0</span>);</span><br><span class="line">            CAKE = <span class="keyword">new</span> Dessert(<span class="string">"CAKE"</span>, <span class="number">1</span>);</span><br><span class="line">            GELATO = <span class="keyword">new</span> Dessert(<span class="string">"GELATO"</span>, <span class="number">2</span>);</span><br><span class="line">            $VALUES = (<span class="keyword">new</span> Dessert[] &#123;</span><br><span class="line">                FRUIT, CAKE, GELATO</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="title">Dessert</span><span class="params">(String s, <span class="keyword">int</span> i)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(s, i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Coffee</span> <span class="keyword">extends</span> <span class="title">Enum</span></span></span><br><span class="line"><span class="class">        <span class="keyword">implements</span> <span class="title">Food</span></span></span><br><span class="line"><span class="class">    </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> Coffee[] values()</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">return</span> (Coffee[])$VALUES.clone();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Coffee <span class="title">valueOf</span><span class="params">(String s)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> (Coffee)Enum.valueOf(com/github/zhoulii/Food$Coffee, s);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Coffee BLACK_COFFEE;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Coffee DECAF_COFFEE;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Coffee LATTE;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Coffee CAPPUCCINO;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Coffee $VALUES[];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">static</span> </span><br><span class="line">        &#123;</span><br><span class="line">            BLACK_COFFEE = <span class="keyword">new</span> Coffee(<span class="string">"BLACK_COFFEE"</span>, <span class="number">0</span>);</span><br><span class="line">            DECAF_COFFEE = <span class="keyword">new</span> Coffee(<span class="string">"DECAF_COFFEE"</span>, <span class="number">1</span>);</span><br><span class="line">            LATTE = <span class="keyword">new</span> Coffee(<span class="string">"LATTE"</span>, <span class="number">2</span>);</span><br><span class="line">            CAPPUCCINO = <span class="keyword">new</span> Coffee(<span class="string">"CAPPUCCINO"</span>, <span class="number">3</span>);</span><br><span class="line">            $VALUES = (<span class="keyword">new</span> Coffee[] &#123;</span><br><span class="line">                BLACK_COFFEE, DECAF_COFFEE, LATTE, CAPPUCCINO</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="title">Coffee</span><span class="params">(String s, <span class="keyword">int</span> i)</span></span></span><br><span class="line"><span class="function">        </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(s, i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="方式5：抽象方法"><a href="#方式5：抽象方法" class="headerlink" title="方式5：抽象方法"></a>方式5：抽象方法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 枚举类中可以包含抽象方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> Color&#123;</span><br><span class="line">    RED(<span class="string">"红"</span>, <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">tellColor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"this is red"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    BLUE(<span class="string">"蓝"</span>, <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">tellColor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"this is blue"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    YELLOW(<span class="string">"黄"</span>, <span class="number">1</span>)&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">tellColor</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">"this is yellow"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> index;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Color</span><span class="params">(String name, <span class="keyword">int</span> index)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.index = index;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getIndex</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.index;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">tellColor</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="方式6：策略枚举"><a href="#方式6：策略枚举" class="headerlink" title="方式6：策略枚举"></a>方式6：策略枚举</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> PayrollDay &#123;</span><br><span class="line">    MONDAY(PayType.WEEKDAY), TUESDAY(PayType.WEEKDAY),</span><br><span class="line">    WEDNESDAY(PayType.WEEKDAY), THURSDAY(PayType.WEEKDAY),</span><br><span class="line">    FRIDAY(PayType.WEEKDAY), SATURDAY(PayType.WEEKEND),</span><br><span class="line">    SUNDAY(PayType.WEEKEND);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> PayType payType;</span><br><span class="line"></span><br><span class="line">    PayrollDay(PayType payType) &#123;</span><br><span class="line">        <span class="keyword">this</span>.payType = payType;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">double</span> <span class="title">pay</span><span class="params">(<span class="keyword">double</span> hoursWorked, <span class="keyword">double</span> payRate)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> payType.pay(hoursWorked, payRate);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 策略枚举</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">enum</span> PayType &#123;</span><br><span class="line">        WEEKDAY &#123;</span><br><span class="line">            <span class="function"><span class="keyword">double</span> <span class="title">overtimePay</span><span class="params">(<span class="keyword">double</span> hours, <span class="keyword">double</span> payRate)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> hours &lt;= HOURS_PER_SHIFT ? <span class="number">0</span> : </span><br><span class="line">                        (hours - HOURS_PER_SHIFT) * payRate / <span class="number">2</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        WEEKEND &#123;</span><br><span class="line">            <span class="function"><span class="keyword">double</span> <span class="title">overtimePay</span><span class="params">(<span class="keyword">double</span> hours, <span class="keyword">double</span> payRate)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> hours * payRate / <span class="number">2</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> HOURS_PER_SHIFT = <span class="number">8</span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">abstract</span> <span class="keyword">double</span> <span class="title">overtimePay</span><span class="params">(<span class="keyword">double</span> hrs, <span class="keyword">double</span> payRate)</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">double</span> <span class="title">pay</span><span class="params">(<span class="keyword">double</span> hoursWorked, <span class="keyword">double</span> payRate)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">double</span> basePay = hoursWorked * payRate;</span><br><span class="line">            <span class="keyword">return</span> basePay + overtimePay(hoursWorked, payRate);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="枚举类的序列化"><a href="#枚举类的序列化" class="headerlink" title="枚举类的序列化"></a>枚举类的序列化</h2><p>以前的所有单例模式都有一个比较大的问题，即一旦实现了 Serializable 接口，就不再能保证单例了，而采用枚举实现单例模式可避免这个问题。</p>
+<p>在枚举类型的序列化和反序列化上，Java 做了特殊的规定，即在序列化的时候 Java 仅仅是将枚举对象的 name 字段输出到结果中，反序列化的时候则是通过 java.lang.Enum 的 valueOf 方法来根据名字查找枚举对象。</p>
+<p>看一个例子，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EnumSerialize</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">enum</span> Color&#123;</span><br><span class="line">        RED,BLUE,YELLOW</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Color[] values = Color.values();</span><br><span class="line">        Color red = values[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">        ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(<span class="keyword">new</span> FileOutputStream(<span class="string">"D:\\enum.txt"</span>));</span><br><span class="line">        objectOutputStream.writeObject(red);</span><br><span class="line">        objectOutputStream.close();</span><br><span class="line"></span><br><span class="line">        ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> FileInputStream(<span class="string">"D:\\enum.txt"</span>));</span><br><span class="line">        Object object = objectInputStream.readObject();</span><br><span class="line"></span><br><span class="line">        System.out.println(object==red);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行上述代码，会输出 true，这就证明了在反序列化的过程中并没有生成新的对象。跟踪 ObjectOutputStream 的 writeObject 方法，可以看到其中对枚举类型做了特殊处理，具体体现在 writeEnum 方法中：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeEnum</span><span class="params">(Enum&lt;?&gt; en,</span></span></span><br><span class="line"><span class="function"><span class="params">                       ObjectStreamClass desc,</span></span></span><br><span class="line"><span class="function"><span class="params">                       <span class="keyword">boolean</span> unshared)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    bout.writeByte(TC_ENUM);</span><br><span class="line">    ObjectStreamClass sdesc = desc.getSuperDesc();</span><br><span class="line">    writeClassDesc((sdesc.forClass() == Enum.class) ? desc : sdesc, false);</span><br><span class="line">    handles.assign(unshared ? <span class="keyword">null</span> : en);</span><br><span class="line">    writeString(en.name(), <span class="keyword">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，对枚举类型做序列化时，只序列化了 name 字段。再来跟踪 ObjectInputStream 的 readObject 方法，同样可以看到对枚举类的特殊处理，具体体现在 readEnum 方法中，这个方法在反序列化枚举类时使用了  java.lang.Enum 的 valueOf 方法来查找枚举对象，从而保证了 JVM 中枚举对象的唯一性。</p>
+<h2 id="枚举类的抗反射攻击"><a href="#枚举类的抗反射攻击" class="headerlink" title="枚举类的抗反射攻击"></a>枚举类的抗反射攻击</h2><p>枚举对象是无法通过反射获取的，因而枚举类可以抗反射攻击。下面使用两个例子来演示通过反射获取枚举对象时存在的问题，先来看第一个：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectionAttack</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">enum</span> EnumInstance &#123;</span><br><span class="line">        INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Class objectClass = EnumInstance<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line">        Constructor constructor = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            constructor = objectClass.getDeclaredConstructor();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        constructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行上述代码会发生 NoSuchMethodException，这是因为枚举类只有一个包含两个参数的构造方法，不存在无参构造（可以通过反编译查看），因而上述代码获取无参构造方法时出错。</p>
+<p>不过即使获取到了构造方法，通过构造方法创建对象时依然会出错，看下面代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.github.zhoulii;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReflectionAttack</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">enum</span> EnumInstance &#123;</span><br><span class="line">        INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Class objectClass = EnumInstance<span class="class">.<span class="keyword">class</span></span>;</span><br><span class="line">        Constructor constructor = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            constructor = objectClass.getDeclaredConstructor(String<span class="class">.<span class="keyword">class</span>, <span class="title">int</span>.<span class="title">class</span>)</span>;</span><br><span class="line">            constructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">            ReflectionAttack instance = (ReflectionAttack)constructor.newInstance(<span class="string">"a"</span>, <span class="number">0</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码执行时会发生 IllegalArgumentException，并且错误提示信息非常清晰，表示不能通过反射创建枚举对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java.lang.IllegalArgumentException: Cannot reflectively create <span class="keyword">enum</span> objects</span><br><span class="line">	at java.lang.reflect.Constructor.newInstance(Constructor.java:<span class="number">417</span>)</span><br><span class="line">	at com.github.zhoulii.ReflectionAttack.main(ReflectionAttack.java:<span class="number">17</span>)</span><br></pre></td></tr></table></figure>
+
+<p>查看 java.lang.reflect.Constructor 类的 newInstance(Object … initargs) 方法，可以发现该方法对枚举类做了专门的处理，禁止通过反射创建枚举实例，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ((clazz.getModifiers() &amp; Modifier.ENUM) != <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Cannot reflectively create enum objects"</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://www.jianshu.com/p/52ba9a19a124" target="_blank" rel="noopener">C05 单例模式 Enum枚举单例（二） 抗反射攻击分析</a></li>
+<li><a href="https://www.cnblogs.com/z00377750/p/9177097.html" target="_blank" rel="noopener">深度分析Java的枚举类型—-枚举的线程安全性及序列化问题</a></li>
+<li><a href="https://www.cnblogs.com/54chensongxia/p/11581555.html" target="_blank" rel="noopener">关于枚举类你可能不知道的事</a></li>
+<li><a href="https://blog.csdn.net/yaomingyang/article/details/80223480" target="_blank" rel="noopener">Java 枚举(enum) 六种常用的方法详解</a></li>
+<li><a href="https://www.cnblogs.com/jingmoxukong/p/6098351.html" target="_blank" rel="noopener">Java 枚举</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+<!--
+          <div class="post-tags">
+              <a href="/blog/tags/java/" rel="tag"># java</a>
+          </div>
+-->
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/blog/2020/02/06/%E3%80%9020200206%E3%80%91%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%85%AB%E7%A7%8D%E5%86%99%E6%B3%95/" rel="prev" title="单例模式的八种写法">
+      <i class="fa fa-chevron-left"></i> 单例模式的八种写法
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举的特性"><span class="nav-text">枚举的特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举的本质"><span class="nav-text">枚举的本质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举的写法"><span class="nav-text">枚举的写法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方式1：定义常量"><span class="nav-text">方式1：定义常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方式2：添加方法"><span class="nav-text">方式2：添加方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方式3：实现接口"><span class="nav-text">方式3：实现接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方式4：组织枚举"><span class="nav-text">方式4：组织枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方式5：抽象方法"><span class="nav-text">方式5：抽象方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方式6：策略枚举"><span class="nav-text">方式6：策略枚举</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举类的序列化"><span class="nav-text">枚举类的序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举类的抗反射攻击"><span class="nav-text">枚举类的抗反射攻击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Leo"
+      src="/blog/images/gakki.png">
+  <p class="site-author-name" itemprop="name">Leo</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/blog/archives/">
+        
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/blog/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/blog/tags/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<!--
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Leo</span>
+</div>
+-->
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,255' opacity='0.5' zIndex='-1' count='150' src="/blog/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/blog/lib/anime.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.min.js"></script>
+  <script src="/blog/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/blog/js/utils.js"></script>
+
+<script src="/blog/js/motion.js"></script>
+
+
+<script src="/blog/js/schemes/pisces.js"></script>
+
+
+<script src="/blog/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/blog/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/blog/js/src/fireworks.js"></script>
+  
+</body>
+</html>
